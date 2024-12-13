@@ -1,44 +1,83 @@
 ---
 layout: page
-title: Installation
+title: Installation & Setup
 permalink: /installation/
 menu: true
 ---
 
-MintyPHP is simple and easy to install. 
-The minimum requirements are a web server and a copy of MintyPHP, that’s it! 
-MintyPHP will run on a variety of web servers and operating systems.
+# Quick Installation Guide
 
-## Requirements
+## System Requirements
 
-- Apache or nginx (rewrite is not required)
-- PHP 7 or greater
-- mysqli PHP extension
+- PHP 7+ 
+- Apache/Nginx
+- mysqli extension
+- MariaDB/MySQL (optional but recommended)
 
-While a database engine isn’t required, most applications will utilize one. 
-MintyPHP supports MariaDB (and other MySQL compatible databases).
+## Installation Methods
 
-## Download
+### 1. Quick Start (Recommended)
 
-You can download the latest version as a zip archive by clicking the button below.
-
-<br>
-<a href='http://github.com/mintyphp/mintyphp/archive/v3.0.4.zip' style="text-decoration: none; color: white; background-color: #21a900; padding: 10px 20px;">Download MintyPHP v3.0.4</a>
-<br>
-<br>
-
-Unzip the archive and run the start.sh script with the following command:
-
-```
+```bash
+# Download and setup
+wget http://github.com/mintyphp/mintyphp/archive/v3.0.4.zip
 unzip mintyphp-3.0.4.zip
 cd mintyphp-3.0.4
+
+# Start development server
 bash start.sh
 ```
 
-It should download composer.phar and adminer and install the latest versions of all PHP dependencies. 
-Then it should start the application in debug mode on [http://localhost:8000/](http://localhost:8000/).
+### 2. Composer Installation
 
-## Configure
+```bash
+composer create-project mintyphp/mintyphp myapp
+cd myapp
+php -S localhost:8000 -t web/
+```
 
-The configurator will start. You need to enter your MySQL credentials and press "Test and Save".
-Now the application starts and you can explore the demo functionality on your own machine.
+## Configuration
+
+1. Visit http://localhost:8000/
+2. Enter database credentials in the configurator
+3. Test connection and save
+
+## Example Database Setup
+
+```sql
+-- Create a simple users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    active TINYINT(1) DEFAULT 1
+);
+```
+
+## Apache Configuration 
+
+Create .htaccess in web/:
+
+```apache
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+```
+
+## Nginx Configuration
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+```
+
+## Troubleshooting
+
+1. Ensure correct file permissions
+2. Check PHP extensions
+3. Verify database connectivity
+4. Enable error reporting in development
+
+Your MintyPHP app should now be running at http://localhost:8000/

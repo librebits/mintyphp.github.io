@@ -1,32 +1,51 @@
 ---
 layout: page
-title: About
+title: About MintyPHP
 permalink: /
 ---
 
-MintyPHP aims to be a full-stack framework that is:
+# MintyPHP: A Pragmatic PHP Framework
 
-1.  Easy to learn (and debug)
-2.  Secure by design
-3.  Light-weight
+MintyPHP is a lightweight, security-focused PHP framework that embraces simplicity. Unlike complex frameworks, it follows a practical approach:
 
-By design, it does:
+## Core Philosophy
 
-1.  … have one variable scope for all layers.
-2.  … require you to write SQL queries (no ORM).
-3.  … use PHP as a templating language.
+1. **One Variable Scope**: All layers share the same scope for straightforward debugging
+2. **Direct SQL**: Write your own queries without ORM overhead
+3. **Native PHP Templates**: Use PHP's built-in templating power
 
-Mainly to make it easy to learn for PHP developers.
+## Quick Example
 
-<br/>
+```php
+// Action file (pages/users.php)
+$users = DB::select("SELECT * FROM users WHERE active = ?", 1);
 
-<a href='/installation/' style="text-decoration: none; color: white; background-color: #21a900; padding: 10px 20px; margin-right: 30px;">Download</a>
-<a href='https://github.com/mintyphp/mintyphp' style="text-decoration: none; color: white; background-color: #21a900; padding: 10px 20px; margin-right: 30px;">Github</a>
+// View file (pages/users.phtml)
+<h1>Active Users</h1>
+<ul>
+<?php foreach ($users as $user): ?>
+    <li><?= e($user['name']) ?></li> <!-- XSS protection with e() -->
+<?php endforeach; ?>
+</ul>
+```
 
-<br/>
+## Security Features
 
-## External links
+- Built-in XSS protection via `e()` function
+- CSRF protection via `Session::getCsrfInput()`
+- SQL injection prevention through parameterized queries
+- Integrated firewall for DDoS protection
 
-- [MintyPHP v3 is released](https://tqdev.com/2022-mintyphp-v3-is-released)
-- [MintyPHP now on packagist!](https://tqdev.com/2018-mindaphp-now-on-packagist)
-- [Reduce the mental load for developers](https://tqdev.com/2018-web-development-made-simple)
+## Latest Release: v3.0.4
+
+Get started with MintyPHP:
+
+- [Download Latest Release](http://github.com/mintyphp/mintyphp/archive/v3.0.4.zip)
+- [GitHub Repository](https://github.com/mintyphp/mintyphp)
+- [Documentation](/docs)
+
+## Recent Updates
+
+- MintyPHP v3 release with enhanced security features
+- Now available on Packagist for easy Composer installation
+- Simplified mental model for rapid development
